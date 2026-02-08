@@ -471,130 +471,108 @@ iframe {
 
 <body>
 
-<div class="video-container">
+<!-- ===================== VIDEO ===================== -->
+<div class="video-wrap">
 
-  <div class="loading-box" id="loadingBox">
-    <div class="spinner" id="spinner"></div>
-    <div class="loading-text" id="statusText">Loading 8</div>
+  <div id="video-container" style="position:relative; width:100%; height:500px; margin:20px 0; background:#000;">
+
+    <!-- Video Player -->
+    <div class="video-wrapper" style="position:relative; width:100%; height:100%;">
+      <video id="videoPlayer" style="width:100%; height:100%" controls playsinline>
+        <source src="https://video.wixstatic.com/video/2b73f7_9c082fe20d0047518b2086b6d3a24ee8/480p/mp4/file.mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- ▶ CONTINUE VIDEO BUTTON -->
+      <div id="continueBtn"
+           style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+                  background:#000; cursor:pointer; z-index:20; display:none;">
+        <button style="font-size:26px; padding:14px 28px; border-radius:6px;
+                       border:none; background:#ff0000; color:#fff; font-weight:bold;">
+          ▶ Continue VIDEO
+        </button>
+      </div>
+    </div>
+
+    <!-- 🎬 Ad Overlay -->
+    <div id="ad-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%;
+         background:rgba(0,0,0,0.75); z-index:30; justify-content:center; align-items:center; flex-direction:column;">
+      <div style="position:absolute; top:20px; right:20px;">
+        <div id="countdown" style="color:white; font-size:22px; font-weight:bold;">Skip in: 7</div>
+        <button id="close-ad"
+                style="display:none; background:#fff; border:none; font-size:20px;
+                       padding:6px 12px; border-radius:4px; cursor:pointer;">X</button>
+      </div>
+      <div id="ad-wrapper"></div>
+    </div>
+
   </div>
-
-  <iframe id="videoFrame" scrolling="no"></iframe>
-
 </div>
 
+
 <script>
-/* ===== CONFIG ===== */
-const sites = [
-  "https://uhir2026.gynecologist.shop/together/vj-junior.html",
-  "https://www.marketing2advertising.com/",
-  "https://www.gynecologist.shop/2025/12/a-long-motivational-and-philosophical.html",
-  "https://www.gynecologist.shop/2025/12/keeper-vj-junior.html",
-  "https://www.gynecologist.shop/2025/12/the-running-man-vj-junior.html",
-  "https://www.gynecologist.shop/2025/12/predator-badlands-vj-soul.html",
-  "https://www.gynecologist.shop/2025/12/sarahs-oil-vj-junior.html",
-  "https://www.gynecologist.shop/2025/12/wildcat-vj-junior.html",
-  "https://www.gynecologist.shop/2025/12/hunting-season-vj-junior.html",
+document.addEventListener("DOMContentLoaded", function () {
+  const video = document.getElementById("videoPlayer");
+  const continueBtn = document.getElementById("continueBtn");
 
-  "https://www.gynecologist.shop/2025/12/girl-in-attic-vj-emmy.html",
-  "https://www.gynecologist.shop/2025/11/vj-junior-man-on-fire.html",
-  "https://www.gynecologist.shop/2025/11/chief-of-staff-vj-junior.html",
-  "https://www.gynecologist.shop/2025/11/is-104000-criminally-low-pay-for.html",
-  "https://www.gynecologist.shop/p/free-vpn-browse-securely-and.html",
+  if (!video || !continueBtn) return;
 
-  "https://www.gynecologist.shop/p/vj-junior-hunting-season.html",
-  "https://www.gynecologist.shop/p/resume-builder.html",
-  "https://www.gynecologist.shop/p/job-matching.html",
-  "https://www.gynecologist.shop/2025/11/how-first-year-queensland-tradie-is.html",
+  const STOP_TIME = 300; // 5 minutes (300 seconds)
+  let locked = false;
 
-  "https://www.gynecologist.shop/p/vj-junior-hunting-season.html",
-  "https://www.gynecologist.shop/p/resume-builder.html",
-  "https://www.gynecologist.shop/p/job-matching.html",
+  // 🔒 Lock download + PiP + remote playback
+  video.setAttribute("controlsList", "nodownload noplaybackrate nofullscreen");
+  video.disablePictureInPicture = true;
+  video.disableRemotePlayback = true;
 
-  "https://www.gynecologist.shop",
-  "https://www.gynecologist.shop/2026/01/django-unchained-vj-junior.html",
+  // ❌ Disable right click on video
+  video.addEventListener("contextmenu", e => e.preventDefault());
 
-  "https://www.gynecologist.shop/2025/12/keeper-vj-junior.html",
-  "https://www.gynecologist.shop/2025/12/the-running-man-vj-junior.html",
-  "https://www.gynecologist.shop/2025/12/predator-badlands-vj-soul.html",
-  "https://www.gynecologist.shop/2025/12/sarahs-oil-vj-junior.html",
-
-  "https://www.gynecologist.shop/2025/12/keeper-vj-junior.html",
-  "https://www.gynecologist.shop/2025/12/the-running-man-vj-junior.html",
-  "https://www.gynecologist.shop/2025/12/predator-badlands-vj-soul.html",
-  "https://www.gynecologist.shop/2025/12/sarahs-oil-vj-junior.html",
-
-  "https://www.gynecologist.shop/",
-  "https://www.gynecologist.shop/2025/12/hunting-season-vj-junior.html",
-  "https://www.gynecologist.shop/2025/11/vj-junior-marvels.html"
-];
-
-const ROTATE_DELAY = 7200000;  // 2 hours per site
-const SKIP_TIMEOUT = 7200000;     // auto-skip 2 hours
-let LOAD_TIME = 2;
-/* ==================== */
-
-let index = 0;
-let rotateTimer;
-let skipTimer;
-let loaded = false;
-
-const statusText = document.getElementById("statusText");
-const loadingBox = document.getElementById("loadingBox");
-const spinner = document.getElementById("spinner");
-const iframe = document.getElementById("videoFrame");
-
-/* Countdown */
-const countdown = setInterval(() => {
-  LOAD_TIME--;
-  statusText.textContent = "Loading " + LOAD_TIME;
-
-  if (LOAD_TIME <= 0) {
-    clearInterval(countdown);
-    startAuto();
-  }
-}, 1000);
-
-function startAuto() {
-  spinner.style.display = "none";
-  statusText.textContent = "READY";
-
-  setTimeout(() => {
-    loadingBox.style.display = "none";
-    iframe.style.display = "block";
-    loadSite();
-    rotateTimer = setInterval(loadSite, ROTATE_DELAY);
-  }, 1000);
-}
-
-function loadSite() {
-  if (index >= sites.length) {
-    clearInterval(rotateTimer);
-    return;
-  }
-
-  loaded = false;
-  iframe.src = sites[index];
-
-  // Auto-skip if blocked
-  clearTimeout(skipTimer);
-  skipTimer = setTimeout(() => {
-    if (!loaded) {
-      index++;
-      loadSite();
+  // ⛔ Prevent fullscreen
+  document.addEventListener("fullscreenchange", () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
     }
-  }, SKIP_TIMEOUT);
+  });
 
-  index++;
-}
+  // ⏱ HARD STOP AT 5 MINUTES
+  video.addEventListener("timeupdate", () => {
+    if (video.currentTime >= STOP_TIME && !locked) {
+      locked = true;
 
-// Detect successful load
-iframe.onload = () => {
-  loaded = true;
-  clearTimeout(skipTimer);
-};
+      video.pause();
+      video.currentTime = STOP_TIME - 0.5;
+      video.controls = false;
+
+      continueBtn.style.display = "flex";
+    }
+  });
+
+  // 🚫 Block seeking past 5 minutes
+  video.addEventListener("seeking", () => {
+    if (video.currentTime > STOP_TIME) {
+      video.currentTime = STOP_TIME - 0.5;
+      video.pause();
+    }
+  });
+
+  // 🔁 If user tries to play again
+  video.addEventListener("play", () => {
+    if (locked) {
+      video.pause();
+      continueBtn.style.display = "flex";
+    }
+  });
+
+  // ▶ CONTINUE BUTTON
+  continueBtn.addEventListener("click", function () {
+    window.open(
+      "https://www.marketing2advertising.com/p/together-vj-junior.html",
+      "_blank"
+    );
+  });
+});
 </script>
-
-
     </div>
 
 
