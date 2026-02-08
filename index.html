@@ -21,9 +21,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
 
-<title>  Together - Vj Emmy</title>
-<meta name="description" content="2026 Together - Vj Emmy Luganda movies by VJ Junior, VJ Jingo, VJ Kevo, Ice P, VJ Ulio. Free mobile-friendly streaming site.">
-
+<title>vj junior - Together</title>
+<meta name="description" content="Watch vj junior - Together 2026 Luganda movies by VJ Junior | VJ Jingo | VJ Kevo - Ice P vj Ulio. free Mobile friendly streaming site">
 
 <style>
 *{box-sizing:border-box}
@@ -407,72 +406,31 @@ body.light-mode .movie-title { background: #007700; color: #fff; }
 
 <body>
 
+
+<!-- ===================== HEADER ===================== -->
+<header>
+  <div class="header-inner">
+    
+
+
+</div>
+    <div>☰</div>
+  </div>
 </header>
-<style>
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: #000;
-  text-align: center;
-}
 
-.video-container {
-  width: 100%;
-  max-width: 1120px;
-  height: 2500px;
-  margin: 50px auto;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  background: #000;
-}
+<!-- ===================== TOP BANNER AD ===================== -->
+<div class="top-ad">
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2269884583846743"
+     data-ad-slot="2906167922"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div>
 
-.loading-box {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.loading-text {
-  color: red;
-  font-size: 26px;
-  font-weight: bold;
-  margin-top: 12px;
-}
-
-.spinner {
-  width: 70px;
-  height: 70px;
-  border: 6px solid rgba(255,0,0,0.3);
-  border-top: 6px solid red;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-iframe {
-  width: 100%;
-  height: 2500px;
-  border: none;
-  display: none;
-  background: #000;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-</style>
-</head>
-
-<body>
-
-
-<!-- ===================== BLOG POST ===================== -->
-
+<!-- ===================== VIDEO ===================== -->
+<div class="video-wrap">
 
 <div id="video-container" style="position:relative; width:100%; height:500px; margin:20px 0;">
 
@@ -635,30 +593,22 @@ videoPlayer.addEventListener('fullscreenchange', function() {
 </script>
     </div>
 
-
 <!-- ===================== CONTENT ===================== -->
 <div class="content">
 
 
-</div>
-
-
-<!-- ===================== FOOTER AD ===================== -->
-<div class="top-ad">
+<!-- IN ARTICLE AD (HIGH RPM) -->
+<div class="in-article-ad">
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-2269884583846743"
-     data-ad-slot="4256856469"
+     data-ad-slot="5610977415"
      data-ad-format="auto"
      data-full-width-responsive="true"></ins>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 </div>
 
-<!-- ===================== MOVIE GRID ===================== -->
-<div class="movie-grid-wrapper">
-  <h2 class="grid-title">What Would You Like to Watch?</h2>
-  <div id="movie-grid" class="movie-grid"></div>
-</div>
+
 <!-- Movie Post Grid with Stylish Play Button -->
 <div id="movie-label-posts"></div>
 
@@ -813,14 +763,12 @@ function renderMovieLabelPosts(json) {
 <!-- Blogger JSON Feed -->
 <script src="https://www.marketing2advertising.com/feeds/posts/default/-/movies1000?alt=json-in-script&amp;callback=renderMovieLabelPosts"></script>
 
-
 <!-- ===================== FOOTER ===================== -->
 <footer class="footer">
   <div class="footer-content">
     <a href="https://www.marketing2advertising.com/contact-us.html">Contact</a> |
     <a href="https://www.marketing2advertising.com/privacy-policy">Privacy</a> |
     <a href="https://www.marketing2advertising.com/p/affiliate-marketing-and-adsense.html">Disclosure</a> |
-    <a href="https://www.marketing2advertising.com/search/label/movies1000.html">movies</a> |
     <a href="https://www.marketing2advertising.com/terms-and-conditions">Terms</a>
     <p>© 2026 Marketing2advertising</p>
   </div>
@@ -855,7 +803,53 @@ function renderMovieLabelPosts(json) {
 </style>
 
 
+<!-- ===================== STICKY MOBILE AD ===================== -->
+<div class="sticky-ad">
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2269884583846743"
+     data-ad-slot="8811425590"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const btn = document.getElementById("desktopToggle");
+  if(!btn) return;
+
+  if(window.innerWidth >= 992){
+    btn.style.display = "none";
+    return;
+  }
+
+  function setDesktopMode(enable){
+    let viewport = document.querySelector('meta[name="viewport"]');
+
+    if(enable){
+      viewport.setAttribute(
+        "content",
+        "width=1200, initial-scale=0.35"
+      );
+      btn.textContent = "Mobile Site";
+      btn.classList.add("active");
+    }else{
+      viewport.setAttribute(
+        "content",
+        "width=device-width, initial-scale=1.0"
+      );
+      btn.textContent = "Desktop Site";
+      btn.classList.remove("active");
+    }
+  }
+
+  btn.addEventListener("click", function(){
+    const isDesktop = btn.classList.contains("active");
+    setDesktopMode(!isDesktop);
+  });
+});
+</script>
 
 </body>
 </html>
