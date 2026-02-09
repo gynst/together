@@ -449,11 +449,7 @@ body.light-mode .movie-title { background: #007700; color: #fff; }
   </div>
 </header>
 
-
-<!-- ===================== VIDEO ===================== -->
-<div class="video-wrap">
-
-<!-- ===================== POST SPLIT LAYOUT ===================== -->
+<!-- ===================== VIDEO + AD SPLIT (POST STYLE) ===================== -->
 <div class="post-split-wrap">
 
   <!-- ===== LEFT: AD COLUMN ===== -->
@@ -466,12 +462,29 @@ body.light-mode .movie-title { background: #007700; color: #fff; }
       data-full-width-responsive="true"></ins>
   </div>
 
-  <!-- ===== RIGHT: MOVIE GRID ===== -->
-  <div id="movie-label-posts-post" class="post-split-content"></div>
+  <!-- ===== RIGHT: VIDEO COLUMN ===== -->
+  <div class="post-split-content">
+    <div id="video-container" style="position:relative; width:100%; height:350px; border-radius:8px; overflow:hidden;">
+      <video id="videoPlayer" style="width:100%; height:100%;" controls>
+        <source src="https://video.wixstatic.com/video/2b73f7_9c082fe20d0047518b2086b6d3a24ee8/480p/mp4/file.mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- 🎬 Ad Overlay -->
+      <div id="ad-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:10; justify-content:center; align-items:center; flex-direction:column;">
+        <div style="position:absolute; top:20px; right:20px; text-align:right; z-index: 20;">
+          <div id="countdown" style="color:white; font-size:22px; font-weight:bold; margin-bottom:8px;">Skip in: 7</div>
+          <button id="close-ad" style="display:none; background:#fff; border:none; font-size:20px; padding:6px 12px; cursor:pointer; border-radius:4px; font-weight:bold;">Skip</button>
+        </div>
+        <div id="ad-wrapper" style="display:flex; justify-content:center; align-items:center; width:100%; height:100%; text-align:center;"></div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
 <style>
+/* ===== POST SPLIT LAYOUT ===== */
 .post-split-wrap {
   display: flex;
   gap: 20px;
@@ -493,112 +506,27 @@ body.light-mode .movie-title { background: #007700; color: #fff; }
   flex: 1;
 }
 
-.post-movie-grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.post-movie-card {
-  background: #111;
-  border-radius: 8px;
-  overflow: hidden;
-  width: 100%;
-  box-shadow: 0 8px 20px rgba(0,0,0,.8);
-  transition: transform .3s ease;
-}
-
-.post-movie-card:hover {
-  transform: scale(1.05);
-}
-
-.post-poster {
-  position: relative;
-  aspect-ratio: 2 / 3;
-  overflow: hidden;
-}
-
-.post-movie-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: .4s ease;
-}
-
-.post-movie-card:hover img {
-  filter: brightness(.5);
-  transform: scale(1.05);
-}
-
-.post-play-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 40px;
-  color: #fff;
-  background: rgba(229,9,20,.9);
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
-  text-align: center;
-  box-shadow: 0 0 20px #e50914;
-  pointer-events: none;
-}
-
-.post-movie-title {
-  padding: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  background: #e50914;
-  color: #fff;
-}
-
 @media (max-width: 768px) {
   .post-split-wrap {
     flex-direction: column;
   }
+  .post-split-ad, .post-split-content {
+    width: 100%;
+  }
 }
 </style>
 
-
-<div id="video-container" style="position:relative; width:100%; height:500px; margin:20px 0;">
-
-    <!-- Video Player (No full-screen functionality) -->
-    <div class="video-wrapper" style="position:relative; width:100%; height:100%;">
-        <video id="videoPlayer" style="width:100%; height:100%" controls>
-            <source src="https://video.wixstatic.com/video/2b73f7_9c082fe20d0047518b2086b6d3a24ee8/480p/mp4/file.mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <!-- 🎬 Ad Overlay (Inside Video Container) -->
-    <div id="ad-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:10; justify-content:center; align-items:center; flex-direction:column;">
-        <!-- Countdown and Skip Button -->
-        <div style="position:absolute; top:20px; right:20px; text-align:right; z-index: 20;">
-            <div id="countdown" style="color:white; font-size:22px; font-weight:bold; margin-bottom:8px;">Skip in: 7</div>
-            <button id="close-ad" style="display:none; background:#fff; border:none; font-size:20px; padding:6px 12px; cursor:pointer; border-radius:4px; font-weight:bold;">Skip</button>
-        </div>
-
-        <!-- Google AdSense Ad Container -->
-        <div id="ad-wrapper" style="display:flex; justify-content:center; align-items:center; width:100%; height:100%; text-align:center;">
-            <!-- AdSense ad will be inserted here dynamically -->
-        </div>
-    </div>
-
-</div>
-
-<!-- 🎬 Google AdSense script -->
-<script async='async' crossorigin='anonymous' src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2269884583846743'></script>
-
+<!-- ===== GOOGLE ADSENSE ===== -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" crossorigin="anonymous"></script>
 <script>
-// Variables to control ad behavior
-let skipClicked = false; // Flag to track if the "Skip" button was clicked
-let videoPlayer = document.getElementById("videoPlayer"); // Video element reference
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
-// Ad configuration for Google AdSense (5 rotating ads)
+<!-- ===== VIDEO OVERLAY ADS LOGIC ===== -->
+<script>
+let skipClicked = false;
+let videoPlayer = document.getElementById("videoPlayer");
+
 const ads = [
     { client:"ca-pub-2269884583846743", slot:"2359999321", width:300, height:250 },
     { client:"ca-pub-2269884583846743", slot:"4256856469", width:250, height:250 },
@@ -607,9 +535,8 @@ const ads = [
     { client:"ca-pub-2269884583846743", slot:"5610977415", width:336, height:280 }
 ];
 
-let currentAdIndex = 0; // Keeps track of which ad to show next
+let currentAdIndex = 0;
 
-// Function to show ad overlay with video and countdown
 function showAdOverlay(customSeconds = 8) {
     const overlay = document.getElementById("ad-overlay");
     const countdownEl = document.getElementById("countdown");
@@ -617,10 +544,9 @@ function showAdOverlay(customSeconds = 8) {
     const adWrapper = document.getElementById("ad-wrapper");
 
     overlay.style.display = "flex";
-    closeBtn.style.display = "none"; // Initially hide the button
-    adWrapper.innerHTML = ""; // Clear previous ad content
+    closeBtn.style.display = "none";
+    adWrapper.innerHTML = "";
 
-    // Load ad
     const ad = ads[currentAdIndex];
     const ins = document.createElement("ins");
     ins.className = "adsbygoogle";
@@ -631,12 +557,10 @@ function showAdOverlay(customSeconds = 8) {
     ins.setAttribute("data-ad-slot", ad.slot);
 
     adWrapper.appendChild(ins);
-    (adsbygoogle = window.adsbygoogle || []).push({}); // Request AdSense ad to load
+    (adsbygoogle = window.adsbygoogle || []).push({});
 
-    // Prepare next ad rotation
     currentAdIndex = (currentAdIndex + 1) % ads.length;
 
-    // Countdown logic
     let timeLeft = customSeconds;
     countdownEl.textContent = "Skip in: " + timeLeft;
 
@@ -645,84 +569,63 @@ function showAdOverlay(customSeconds = 8) {
         countdownEl.textContent = "Skip in: " + timeLeft;
 
         if (timeLeft === 0) {
-            closeBtn.style.display = "inline-block"; // Show the skip button after countdown ends
-            closeBtn.textContent = "X"; // Change button to "X"
+            closeBtn.style.display = "inline-block";
+            closeBtn.textContent = "X";
             clearInterval(timer);
         }
-    }, 1000); // 1-second interval for countdown
+    }, 1000);
 
-    // Handle close button behavior
     closeBtn.onclick = function() {
-        overlay.style.display = "none"; // Close the ad overlay
-        videoPlayer.play(); // Play the video after ad is skipped
+        overlay.style.display = "none";
+        videoPlayer.play();
     };
 }
 
-// Special rule: First opening = 2 ads with delay (after 2 minutes)
 function runInitialTwoAds() {
     setTimeout(() => {
-        // Ad 1 = 7 seconds
-        showAdOverlay(7); // Ad 1 displays for 7 seconds
-
-        // After 7 seconds, show the Skip button
+        showAdOverlay(7);
         setTimeout(() => {
             const closeBtn = document.getElementById("close-ad");
-            closeBtn.style.display = "inline-block"; // Show "Skip" button
-            closeBtn.textContent = "Skip"; // Set button text to "Skip"
-        }, 7000); // Show Skip button after 7 seconds
+            closeBtn.style.display = "inline-block";
+            closeBtn.textContent = "Skip";
+        }, 7000);
 
-        // Check if "Skip" button is clicked before transitioning to Ad 2
         const closeBtn = document.getElementById("close-ad");
         closeBtn.onclick = function() {
-            skipClicked = true; // Mark that "Skip" was clicked
-            showAdOverlay(8); // Show Ad 2 immediately (for 8 seconds)
-            closeBtn.style.display = "none"; // Hide the skip button
+            skipClicked = true;
+            showAdOverlay(8);
+            closeBtn.style.display = "none";
         };
 
-        // If "Skip" button isn't clicked, Ad 2 will show after 13 more seconds (20 seconds total)
         setTimeout(() => {
             if (!skipClicked) {
-                showAdOverlay(8); // Ad 2 shows for 8 seconds after the delay
+                showAdOverlay(8);
             }
-        }, 20000); // Trigger after 20 seconds (7 seconds for Ad 1 + 13 seconds wait)
-    }, 120000); // Wait 2 minutes (120 seconds) before showing the first ad
+        }, 20000);
+
+    }, 120000);
 }
 
-// Start the ad sequence
-runInitialTwoAds(); // Display first two ads after 2 minutes (7s + 13s wait = 20s)
+runInitialTwoAds();
 
-// Start full schedule AFTER the second ad finishes
 setTimeout(() => {
-    // Further ad schedule starts here (after initial ads)
-    
-    // 1) 5 minutes (300 seconds)
     setTimeout(showAdOverlay, 300000);
-
-    // 2) 10 minutes (600 seconds)
     setTimeout(showAdOverlay, 600000);
-
-    // 3) 20 minutes (1200 seconds)
     setTimeout(showAdOverlay, 1200000);
-
-    // 4) 30 minutes (1800 seconds)
     setTimeout(showAdOverlay, 1800000);
-
-    // 5) Every 35 minutes (2100 seconds)
     setInterval(showAdOverlay, 2100000);
+}, 20000);
 
-}, 20000); // Wait for the first 20 seconds (7 + 13) to complete, then start the schedule
-
-// Prevent Full-Screen Mode
-videoPlayer.removeAttribute("controlsList"); // Remove full-screen control from the player
-
-// Prevent the user from entering full-screen programmatically
+videoPlayer.removeAttribute("controlsList");
 videoPlayer.addEventListener('fullscreenchange', function() {
     if (document.fullscreenElement) {
-        document.exitFullscreen(); // Automatically exit fullscreen if attempted
+        document.exitFullscreen();
     }
 });
-
 </script>
+
+
+
     </div>
 
 <!-- ===================== CONTENT ===================== -->
@@ -980,6 +883,16 @@ document.addEventListener("DOMContentLoaded", function(){
     const isDesktop = btn.classList.contains("active");
     setDesktopMode(!isDesktop);
   });
+});
+</script>
+
+<!-- ===================== BUTTON ===================== -->
+<button id="modeToggle">Full Screen</button>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+document.getElementById('modeToggle').addEventListener('click', function () {
+  window.open('https://uhir2026.gynecologist.shop/together/vj-junior.html', '_blank');
 });
 </script>
 
